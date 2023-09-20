@@ -11,7 +11,7 @@ public class MyWorld extends World
     {
         setBackground("img/BG.png");
         cat = new Cat();
-        addObject(cat, 100, 100);
+        addObject(cat,50, 390);
         // dog = new Dog();
         // addObject(dog, 200, 200);
         // jack = new Jack();
@@ -48,22 +48,6 @@ public class MyWorld extends World
                 {
                         addObject(new Block(), j * 128, i + 472);
                 }
-            }
-        }
-    }
-    public void addMainCharacter()
-    {
-        cat = new Cat();
-        boolean added = false;
-        while(added == false)
-        {
-            int row = (int) (Math.random()*tiles.length);
-            int col = (int) (Math.random()*tiles[0].length);
-            if(tiles[row][col].equals(""))
-            {
-                addObject(cat, row * 100, col * 100);
-                tiles[row][col].equals("cat");
-                added = true;
             }
         }
     }
