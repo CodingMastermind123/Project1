@@ -6,6 +6,10 @@ public class Cat extends AnimatedActor
     private MayflowerImage[] frames;
     private int currentFrame;
     private Timer animationTimer;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
     public Cat()
 {
       score = 0;
@@ -38,10 +42,10 @@ public class Cat extends AnimatedActor
         setImage ( frames[currentFrame] );
         currentFrame++;
         
-        int x = getX();
-        int y = getY();
-        int w = getWidth();
-        int h = getHeight();
+        x = getX();
+        y = getY();
+        w = getWidth();
+        h = getHeight();
         
         if ((x+w < 800) && (x > 0) && (y+h < 600) && (y > 0))
         {
@@ -60,6 +64,15 @@ public class Cat extends AnimatedActor
         if (Mayflower.isKeyDown( Keyboard.KEY_UP )) 
         {
             setLocation (x, y - 1);
+            while(y == 200 && y != 390 && Mayflower.isKeyDown( Keyboard.KEY_UP ))
+            {
+                y += 190;
+                setLocation(x, y);
+            }
+        }
+        if(Mayflower.isKeyDown(Keyboard.KEY_UP) && Mayflower.isKeyDown(Keyboard.KEY_RIGHT))
+        {
+            setLocation(x+1, y - 1);
         }
     }
         if(y == 0)
@@ -132,5 +145,17 @@ private void updateText()
     World w = getWorld();
     w.removeText(10, 30);
     w.showText("Score: " + score + " Lives: " + lives, 10, 30, Color.BLACK);
+}
+public void gravity()
+{
+    x = getX();
+    y = getY();
+    w = getWidth();
+    h = getHeight();
+    
+    while(y == 500 && y != 390 && Mayflower.isKeyDown( Keyboard.KEY_UP ))
+    {
+        y-=50;
+    }
 }
 }
