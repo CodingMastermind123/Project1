@@ -34,49 +34,32 @@ public class Cat extends AnimatedActor {
     x = getX();
     y = getY();
     h = getHeight();
-        
-        
+          
     int prevX = x;
     int prevY = y;
 
-    // Update the current frame for animation
     setImage(frames[currentFrame]);
     currentFrame = (currentFrame + 1) % frames.length;
 
-    // Handle jumping
     if (Mayflower.isKeyDown(Keyboard.KEY_UP) && !isJumping) {
         velocityY = jumpForce;
         isJumping = true;
     }
 
-    // Handle movement
-    if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT) && x + getWidth() < 800) {
-        x += 1;
-    }
-    if (Mayflower.isKeyDown(Keyboard.KEY_LEFT) && x > 0) {
-        x -= 1;
-    }
-
-    // Update y position only if the character is jumping
     if (isJumping) {
         velocityY += gravity;
         y += (int) velocityY;
 
-        // Check for collision with the ground
         if (y >= groundY) {
             y = groundY;
             isJumping = false;
-            velocityY = 0;  // Reset velocity when landing
+            velocityY = 0; 
         }
     }
 
-    // Set the new location of the character
     setLocation(x, y);
-
-    // Update the text
     updateText();
 }
-
     private void updateText() {
         World w = getWorld();
         w.removeText(10, 30);
