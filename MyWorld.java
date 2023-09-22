@@ -18,7 +18,7 @@ public class MyWorld extends World
         // addObject(jack, 150, 150);
         // ninja = new Ninja();
         //addObject(ninja, 250, 250);
-        tiles = new String[6][8];
+        tiles = new String[6][1000];
         buildWorld();
     }
     
@@ -46,7 +46,7 @@ public class MyWorld extends World
             {
                 if(tiles[i][j] == "ground")
                 {
-                        addObject(new Block(), j * 128, i + 472);
+                        addObject(new MovingBlock(), j * 128, i + 472);
                 }
             }
         }
