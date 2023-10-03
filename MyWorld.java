@@ -30,7 +30,10 @@ public class MyWorld extends World
     
     public void act()
     {
-       updateText(); 
+       if(cat.getLives() == 0)
+       {
+           removeObject(cat);
+        }
     }
     
     public void buildWorld()
@@ -73,9 +76,18 @@ public class MyWorld extends World
                 }
             }
         }
+        for(int i = 0; i < tiles.length; i++)
+        {
+            for(int j = 0; j < tiles[0].length; j++)
+            {
+                if(i == 5 && j > 5 && j < 10)
+                {
+                    MovingBlock block = new MovingBlock();
+                    block.scale(50, 50);
+                    addObject(block, j * 128, i + 472);
+                }
+            }
+        }
     }
-        private void updateText() {
-        removeText(10, 30);
-        showText("Score: " + score + " Lives: " + lives, 10, 30, Color.BLACK);
-    }
+    
 }
