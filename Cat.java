@@ -15,11 +15,14 @@ public class Cat extends AnimatedActor {
     private boolean isWalking = false;
     private Animation walk;
     private Animation idle;
+    private int score;
+    private int lives;
+    boolean invulnerable = false;
+    Timer invulnerableTimer = new Timer(100000);
 
     public Cat() {
-        //MayflowerImage p = new MayflowerImage("img/cat/Walk (1).png");
-        //p.scale(0.3);
-        //setImage(p);
+        score = 0;
+        lives = 3;
         frame = new String[10];
         frame2 = new String[10];
         for (int i = 1; i <= frame.length; i++) {
@@ -33,7 +36,7 @@ public class Cat extends AnimatedActor {
     }
 
     public void act() {
-        
+
         if(Mayflower.isKeyDown(Keyboard.KEY_RIGHT))
         {
             setAnimation(walk);
@@ -42,9 +45,9 @@ public class Cat extends AnimatedActor {
         {
             setAnimation(idle);
         }
-        
+
         super.act();
-        
+
         x = getX();
         y = getY();
         h = getHeight();
@@ -67,5 +70,62 @@ public class Cat extends AnimatedActor {
         }
 
         setLocation(x, y);
+        updateText();
+
+        if(isTouching(Water.class) && invulnerable == false)
+        {
+            decreaseLives();
+            setInvulnerable();
+
+            if(lives == 0)
+            {
+                World w = getWorld();
+                w.removeText(10, 30);
+                w.showText("Game Over", 400, 300, Color.BLACK);
+            }
+        }
+    }
+
+    public int getScore()
+    {
+        return score;
+    }
+
+    public int getLives()
+    {
+        return lives;
+    }
+
+    public void decreaseLives()
+    {
+        lives = lives - 1;
+        updateText();
+    }
+    
+    public void increaseScore()
+    {
+        score++;
+    }
+    public void updateText()
+    {
+        World w = getWorld();
+        w.removeText(10, 30);
+        w.showText("Score: " + score + " Lives: " + lives, 10, 30, Color.BLACK);
+    }
+
+    public void setInvulnerable()
+    {
+        invulnerable = true;
+        invulnerableTimer.reset();
+    }
+
+    public boolean isInvulnerable()
+    {
+        if(invulnerableTimer.isDone())
+        {
+            invulnerable = false;
+        }
+
+        return invulnerable;
     }
 }
