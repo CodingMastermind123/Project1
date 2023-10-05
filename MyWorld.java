@@ -1,23 +1,16 @@
 import mayflower.*;
 
-
 public class MyWorld extends World 
 {
-    private int score;
-    private int lives;
     private Cat cat;
-    private Coin coin;
-    
+
     private String[][] tiles;
     public MyWorld() 
     {
         setBackground("img/BG.png");
-        score = 0;
-        lives = 3;
         cat = new Cat();
-        coin = new Coin();
         addObject(cat,50, 393);
-        addObject(coin, 55, 393);
+
         // dog = new Dog();
         // addObject(dog, 200, 200);
         // jack = new Jack();
@@ -27,15 +20,22 @@ public class MyWorld extends World
         tiles = new String[6][100];
         buildWorld();
     }
-    
+
     public void act()
     {
-       if(cat.getLives() == 0)
-       {
-           removeObject(cat);
+        
+        if (cat.getLives() == 0) {
+            removeObject(cat);
+            showText("Game Over!", 400, 300, Color.BLACK);
+        }
+        if(cat.getScore() == 3)
+        {
+            removeObject(cat);
+            removeText(10, 30);
+            showText("YOU WON!", 400, 300, Color.BLACK);
         }
     }
-    
+
     public void buildWorld()
     {
         for(int i = 0; i < tiles.length; i++)
@@ -45,49 +45,60 @@ public class MyWorld extends World
                 tiles[i][j] = "";
             }
         }
+        tiles[5][10] = "water"; 
+        tiles[5][15] = "water"; 
+        tiles[5][20] = "water"; 
+        tiles[5][25] = "water"; 
+        tiles[5][35] = "water";  
+        tiles[5][40] = "water";  
+        tiles[5][43] = "water"; 
+        tiles[5][46] = "water";  
+        tiles[5][48] = "water";  
+
+        tiles[4][15] = "coin"; 
+        tiles[4][50] = "coin";  
+        tiles[4][30] = "coin";  
         for(int i = 0; i < tiles[0].length; i++)
         {
-            tiles[5][i] = "ground";
+            if(tiles[5][i] == "")
+            {
+                tiles[5][i] = "ground";
+            }
+
         }
         for(int i = 0; i < tiles.length; i++)
         {
             for(int j = 0; j < tiles[0].length; j++)
             {
-                int random = (int)(Math.random() * 8);
-                Water water = new Water();
-                if(tiles[i][j] == "ground" && random < 3)
-                {
-                    addObject(water, j * 128, i + 472);
-                    tiles[i][j] = "water";
-                }
                 if(tiles[i][j] == "ground")
                 {  
                     MovingBlock block = new MovingBlock();
-                    block.scale(50, 50);
                     addObject(block, j * 128, i + 472);
                 }
-                if(j - 1 > 0 && tiles[i][j] == "water" && tiles[i][j - 1] == "water")
-                {
-                    tiles[i][j] = "ground";
-                    removeObject(water);
-                    MovingBlock block = new MovingBlock();
-                    block.scale(50, 50);
-                    addObject(block, j * 128, i + 472);
+
+            }
+        }
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+
+                if (tiles[i][j].equals("coin")) {
+                    Coin coin = new Coin();
+                    int x = j * 100;
+                    int y = 393; 
+                    addObject(coin, x, y);
                 }
             }
         }
-        for(int i = 0; i < tiles.length; i++)
-        {
-            for(int j = 0; j < tiles[0].length; j++)
-            {
-                if(i == 5 && j > 5 && j < 10)
-                {
-                    MovingBlock block = new MovingBlock();
-                    block.scale(50, 50);
-                    addObject(block, j * 128, i + 472);
+
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+
+                if (tiles[i][j].equals("water")) {
+                    Water water = new Water();
+                    addObject(water, j * 128, i + 472);
                 }
             }
         }
     }
-    
 }
